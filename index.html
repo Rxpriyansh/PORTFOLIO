@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title> PRIYANSH GANDHARV Full Stack Software Engineer</title>
+    <meta name="description"
+        content="PRIYANSH GANDHARV — Full Stack  Engineer specializing in distributed systems, real-time architecture, and high-performance applications. Expert in React, Next.js, Node.js, Java, Spring Boot, TypeScript & more." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <!-- ══ 1. BOOT SCREEN ══════════════════════════════════════ -->
+    <div id="bootScreen" class="boot-screen">
+        <div class="boot-inner">
+            <div class="boot-logo">[
+                AM]_</div>
+            <div id="bootLog" class="boot-log"></div>
+            <div class="boot-bar-wrap">
+                <div id="bootBar" class="boot-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ 2. NOISE TEXTURE ═══════════════════════════════════ -->
+    <div class="noise-overlay"></div>
+
+    <!-- ══ CURSOR GLOW ════════════════════════════════════════ -->
+    <div class="cursor-glow" id="cursorGlow"></div>
+    <!-- custom dot cursor -->
+    <div class="cursor-dot" id="cursorDot"></div>
+
+    <!-- ══ SCANLINES ══════════════════════════════════════════ -->
+    <div class="scanlines"></div>
+
+    <!-- ══ 3. COMMAND PALETTE (Ctrl+K) ════════════════════════ -->
+    <div id="cmdPalette" class="cmd-palette hidden">
+        <div class="cmd-backdrop" id="cmdBackdrop"></div>
+        <div class="cmd-modal">
+            <div class="cmd-header">
+                <span class="cmd-icon">⌘</span>
+                <input id="cmdInput" class="cmd-input" placeholder="Type a command or section..." autocomplete="off"
+                    spellcheck="false" />
+                <kbd class="cmd-esc">ESC</kbd>
+            </div>
+            <ul class="cmd-list" id="cmdList">
+                <li class="cmd-item" data-action="home"> <span class="cmd-emoji">🏠</span> Go Home</li>
+                <li class="cmd-item" data-action="about"> <span class="cmd-emoji">👤</span> About</li>
+                <li class="cmd-item" data-action="skills"> <span class="cmd-emoji">⚡</span> Skills</li>
+                <li class="cmd-item" data-action="experience"><span class="cmd-emoji">💼</span> Experience</li>
+                <li class="cmd-item" data-action="projects"><span class="cmd-emoji">📁</span> Projects</li>
+                <li class="cmd-item" data-action="contact"> <span class="cmd-emoji">✉</span> Contact</li>
+                <li class="cmd-item" data-action="github"> <span class="cmd-emoji">🐙</span> GitHub</li>
+                <li class="cmd-item" data-action="cli"> <span class="cmd-emoji">🖥️</span> Open Terminal</li>
+            </ul>
+            <div class="cmd-footer">
+                <span><kbd>↑↓</kbd> navigate</span>
+                <span><kbd>↵</kbd> select</span>
+                <span><kbd>Esc</kbd> close</span>
+                <span><kbd>Ctrl+K</kbd> toggle</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ 4. FLOATING INTERACTIVE CLI ════════════════════════ -->
+    <div id="floatCli" class="float-cli hidden">
+        <div class="float-cli-header" id="cliDragHandle">
+            <div class="float-cli-dots">
+                <span class="t-dot red" id="cliClose"></span>
+                <span class="t-dot yellow" id="cliMin"></span>
+                <span class="t-dot green"></span>
+            </div>
+            <span class="float-cli-title">bash — 80×24</span>
+            <button class="cli-fullscreen-btn" id="cliFullBtn" title="Expand">⤢</button>
+        </div>
+        <div class="float-cli-body" id="cliBody">
+            <div id="cliOutput" class="cli-output">
+                <p class="cli-welcome">Welcome to Priyansh's Portfolio Terminal v2.0</p>
+                <p class="cli-dim">Type <span class="cli-acc">help</span> to see available commands.</p>
+                <br />
+            </div>
+            <div class="cli-input-row">
+                <span class="t-prompt">visitor@portfolio:~$</span>
+                <input id="cliInput" class="cli-live-input" autocomplete="off" spellcheck="false" />
+            </div>
+        </div>
+    </div>
+    <!-- CLI toggle button -->
+    <button id="cliToggleBtn" class="cli-toggle-btn" title="Open Terminal">
+        <span class="cli-btn-icon">&gt;_</span>
+    </button>
+
+    <!-- ══ NAVBAR ══════════════════════════════════════════════ -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <span class="logo-bracket">[</span>
+                <span class="logo-text">AM</span>
+                <span class="logo-bracket">]</span>
+                <span class="cursor-blink">_</span>
+            </a>
+            <div class="nav-links">
+                <a href="#about" class="nav-link"><span class="nav-num">01.</span> About</a>
+                <a href="#skills" class="nav-link"><span class="nav-num">02.</span> Skills</a>
+                <a href="#experience" class="nav-link"><span class="nav-num">03.</span> Experience</a>
+                <a href="#projects" class="nav-link"><span class="nav-num">04.</span> Projects</a>
+                <a href="#contact" class="nav-link"><span class="nav-num">05.</span> Contact</a>
+                <button class="cmd-btn" id="cmdOpenBtn" title="Command palette (Ctrl+K)">
+                    <span>⌘K</span>
+                </button>
+            </div>
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="#about" class="mobile-link"><span class="nav-num">01.</span> About</a>
+            <a href="#skills" class="mobile-link"><span class="nav-num">02.</span> Skills</a>
+            <a href="#experience" class="mobile-link"><span class="nav-num">03.</span> Experience</a>
+            <a href="#projects" class="mobile-link"><span class="nav-num">04.</span> Projects</a>
+            <a href="#contact" class="mobile-link"><span class="nav-num">05.</span> Contact</a>
+        </div>
+    </nav>
+
+    <!-- ══ HERO ════════════════════════════════════════════════ -->
+    <section class="hero" id="home">
+        <div class="matrix-bg" id="matrixBg"></div>
+        <div class="hero-content">
+            <div class="hero-terminal">
+                <div class="terminal-header">
+                    <span class="t-dot red"></span>
+                    <span class="t-dot yellow"></span>
+                    <span class="t-dot green"></span>
+                    <span class="t-title">~/portfolio — bash</span>
+                </div>
+                <div class="terminal-body">
+                    <p class="t-line"><span class="t-prompt">visitor@portfolio:~$</span> <span class="t-cmd typed-text"
+                            id="typedText"></span><span class="t-cursor">|</span></p>
+                </div>
+            </div>
+            <div class="hero-text">
+                <p class="hero-greeting">Hello, I'm</p>
+                <!-- ══ GLITCH NAME ══ -->
+                <h1 class="hero-name glitch" data-text="PRIYANSH GANDHARV">PRIYANSH GANDHARV</h1>
+                <p class="hero-title">&lt;<span class="title-highlight">Architect</span> /&gt; Engineering Beyond
+                    Boundaries.</p>
+                <p class="hero-sub">Specializing in <span class="highlight-text">distributed systems</span>, <span
+                        class="highlight-text">real-time architecture</span>, and <span
+                        class="highlight-text">high-performance applications</span>.</p>
+                <div class="hero-btns">
+                    <a href="https://github.com/Rxpriyansh" target="_blank" class="btn-secondary">
+                        <span class="btn-icon">⟩</span> Check out GitHub
+                    </a>
+                </div>
+            </div>
+            <div class="scroll-indicator">
+                <span class="scroll-text">scroll down</span>
+                <div class="scroll-line"></div>
+            </div>
+        </div>
+        <div class="hero-grid"></div>
+    </section>
+
+    <!-- ══ ABOUT ═══════════════════════════════════════════════ -->
+    <section class="section" id="about">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag"># About.system</span>
+                <h2 class="section-title">About Me</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="about-grid">
+                <div class="about-terminal">
+                    <div class="terminal-header">
+                        <span class="t-dot red"></span>
+                        <span class="t-dot yellow"></span>
+                        <span class="t-dot green"></span>
+                        <span class="t-title">about.sh</span>
+                    </div>
+                    <div class="terminal-body about-body">
+                        <p><span class="t-prompt">➜</span> <span class="t-cmd">whoami</span></p>
+                        <p class="t-output">I am a tech-driven creator and aspiring entrepreneur with<br />a strong
+                            passion for building digital solutions and growing<br />in the IT industry. I enjoy
+                            exploring technology, automation,<br />and innovative ideas that can solve real-world
+                            problems.</p>
+                        <br />
+                        <p><span class="t-prompt">➜</span> <span class="t-cmd">cat interests.txt</span></p>
+                        <p class="t-output">
+                            💻 <span class="t-green">Technology &amp; Development</span><br />
+                            &nbsp;&nbsp;▸ Website &amp; mobile app development<br />
+                            &nbsp;&nbsp;▸ UI/UX design and digital experiences<br />
+                            &nbsp;&nbsp;▸ Automation systems &amp; AI-powered solutions<br />
+                            &nbsp;&nbsp;▸ Software and SaaS product ideas<br /><br />
+                            I like understanding how systems work and often explore<br />
+                            networking, AI concepts, and programming fundamentals.
+                        </p>
+                        <br />
+
+                        🚀 <span class="t-green">Entrepreneurial Mindset</span><br />
+                        I am actively working on promoting and growing IT services<br />
+                        through ventures like:<br /><br />
+                        &nbsp;&nbsp;▸ <span class="highlight-text">MS INFOTECH</span><br />
+                        &nbsp;&nbsp;▸ <span class="highlight-text">Maya Group Solutions</span><br /><br />
+                        My focus is on helping businesses with development, design,<br />
+                        and automation solutions while building a strong digital presence.
+                        </p>
+                        <br />
+                        <p><span class="t-prompt">➜</span> <span class="t-cmd">echo $STATUS</span></p>
+                        <p class="t-output t-green">Open to exciting opportunities <span class="cursor-blink">_</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="about-stats">
+                    <div class="stat-card">
+                        <span class="stat-num" data-target="3">0</span><span class="stat-num">+</span>
+                        <span class="stat-label">Years Experience</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-num" data-target="20">0</span><span class="stat-num">+</span>
+                        <span class="stat-label">Projects Shipped</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-num" data-target="10">0</span><span class="stat-num">K+ Req/sec</span>
+                        <span class="stat-label">Handled</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-num">∞</span>
+                        <span class="stat-label">Bugs Fixed</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ SKILLS ═══════════════════════════════════════════════ -->
+    <section class="section section-alt" id="skills">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag"># Skills.json</span>
+                <h2 class="section-title">Tech Stack</h2>
+                <div class="section-line"></div>
+            </div>
+
+            <!-- ══ 5. ANIMATED SKILL BARS ══ -->
+            <div class="skill-bars-grid">
+                <div class="skill-bar-item">
+                    <div class="sb-meta"><span class="sb-name">React / Next.js</span><span class="sb-pct">95%</span>
+                    </div>
+                    <div class="sb-track">
+                        <div class="sb-fill" data-pct="95" style="--clr:#00FF88"></div>
+                    </div>
+                </div>
+                <div class="skill-bar-item">
+                    <div class="sb-meta"><span class="sb-name">TypeScript</span><span class="sb-pct">90%</span></div>
+                    <div class="sb-track">
+                        <div class="sb-fill" data-pct="90" style="--clr:#00D4FF"></div>
+                    </div>
+                </div>
+                <div class="skill-bar-item">
+                    <div class="sb-meta"><span class="sb-name">Node.js / Express</span><span class="sb-pct">88%</span>
+                    </div>
+                    <div class="sb-track">
+                        <div class="sb-fill" data-pct="88" style="--clr:#00FF88"></div>
+                    </div>
+                </div>
+                <div class="skill-bar-item">
+                    <div class="sb-meta"><span class="sb-name">Java / Spring Boot</span><span class="sb-pct">82%</span>
+                    </div>
+                    <div class="sb-track">
+                        <div class="sb-fill" data-pct="82" style="--clr:#7B61FF"></div>
+                    </div>
+                </div>
+                <div class="skill-bar-item">
+                    <div class="sb-meta"><span class="sb-name">PostgreSQL / Redis</span><span class="sb-pct">85%</span>
+                    </div>
+                    <div class="sb-track">
+                        <div class="sb-fill" data-pct="85" style="--clr:#00D4FF"></div>
+                    </div>
+                </div>
+                <div class="skill-bar-item">
+                    <div class="sb-meta"><span class="sb-name">Docker / Kubernetes</span><span class="sb-pct">78%</span>
+                    </div>
+                    <div class="sb-track">
+                        <div class="sb-fill" data-pct="78" style="--clr:#FF6B6B"></div>
+                    </div>
+                </div>
+                <div class="skill-bar-item">
+                    <div class="sb-meta"><span class="sb-name">AWS / Cloud</span><span class="sb-pct">75%</span></div>
+                    <div class="sb-track">
+                        <div class="sb-fill" data-pct="75" style="--clr:#FFD93D"></div>
+                    </div>
+                </div>
+                <div class="skill-bar-item">
+                    <div class="sb-meta"><span class="sb-name">GraphQL</span><span class="sb-pct">80%</span></div>
+                    <div class="sb-track">
+                        <div class="sb-fill" data-pct="80" style="--clr:#7B61FF"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- tag chips still shown below -->
+            <div class="skills-container" style="margin-top:3rem">
+                <div class="skill-group">
+                    <h3 class="skill-group-title"><span class="t-prompt">$</span> Frontend</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">React</span><span class="skill-tag">Next.js</span>
+                        <span class="skill-tag">TypeScript</span><span class="skill-tag">Tailwind CSS</span>
+                        <span class="skill-tag">Redux</span><span class="skill-tag">Vue.js</span>
+                    </div>
+                </div>
+                <div class="skill-group">
+                    <h3 class="skill-group-title"><span class="t-prompt">$</span> Backend</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Node.js</span><span class="skill-tag">Java</span>
+                        <span class="skill-tag">Spring Boot</span><span class="skill-tag">Express.js</span>
+                        <span class="skill-tag">GraphQL</span><span class="skill-tag">REST APIs</span>
+                    </div>
+                </div>
+                <div class="skill-group">
+                    <h3 class="skill-group-title"><span class="t-prompt">$</span> Infrastructure</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Docker</span><span class="skill-tag">Kubernetes</span>
+                        <span class="skill-tag">AWS</span><span class="skill-tag">CI/CD</span>
+                        <span class="skill-tag">Nginx</span><span class="skill-tag">Linux</span>
+                    </div>
+                </div>
+                <div class="skill-group">
+                    <h3 class="skill-group-title"><span class="t-prompt">$</span> Database</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">PostgreSQL</span><span class="skill-tag">MongoDB</span>
+                        <span class="skill-tag">Redis</span><span class="skill-tag">MySQL</span>
+                        <span class="skill-tag">Elasticsearch</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ EXPERIENCE ══════════════════════════════════════════ -->
+    <section class="section" id="experience">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">$ git log --stat --oneline</span>
+                <h2 class="section-title">Experience</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="exp-header">
+                            <h3 class="exp-role">Full Stack Developer</h3>
+                            <span class="exp-company">@ StartupX</span>
+                        </div>
+                        <p class="exp-date">2023 – Present</p>
+                        <p class="exp-desc">Built MVP from scratch to Series A. Developed core product features and
+                            scaled infrastructure.</p>
+                        <ul class="exp-list">
+                            <li>Architected microservices handling 10K+ req/sec with &lt;99ms latency</li>
+                            <li>Led migration from monolith to distributed system — 40% cost reduction</li>
+                            <li>Implemented real-time data pipeline using WebSockets and Kafka</li>
+                        </ul>
+                        <div class="exp-tags">
+                            <span class="exp-tag">React</span><span class="exp-tag">Node.js</span>
+                            <span class="exp-tag">PostgreSQL</span><span class="exp-tag">Docker</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="exp-header">
+                            <h3 class="exp-role">Frontend Developer</h3>
+                            <span class="exp-company">@ Digital Agency</span>
+                        </div>
+                        <p class="exp-date">2022 – 2023</p>
+                        <p class="exp-desc">Developed responsive web applications for clients across various industries.
+                        </p>
+                        <ul class="exp-list">
+                            <li>Delivered 15+ client projects on time with 99% client satisfaction</li>
+                            <li>Improved Core Web Vitals scores by 60% across all projects</li>
+                            <li>Established component library used by 4-person team</li>
+                        </ul>
+                        <div class="exp-tags">
+                            <span class="exp-tag">React</span><span class="exp-tag">TypeScript</span>
+                            <span class="exp-tag">Tailwind</span><span class="exp-tag">REST APIs</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ PROJECTS ════════════════════════════════════════════ -->
+    <section class="section section-alt" id="projects">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">$ ls -la ~/projects</span>
+                <h2 class="section-title">Projects</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="projects-grid">
+
+                <!-- Project cards – 3D tilt applied via JS -->
+                <div class="project-card tilt-card">
+                    <div class="tilt-inner">
+                        <div class="project-header">
+                            <div class="proj-icons">
+                                <span class="proj-folder">📁</span>
+                                <div class="proj-links">
+                                    <a href="https://github.com/Rxpriyansh" target="_blank" class="proj-link">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                            <path
+                                                d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+                                        </svg>
+                                    </a>
+                                    <a href="#" target="_blank" class="proj-link">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                                            <polyline points="15 3 21 3 21 9" />
+                                            <line x1="10" y1="14" x2="21" y2="3" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="proj-name">e-commerce-api</h3>
+                        <p class="proj-desc">High-performance REST API with microservices architecture, handling 10K+
+                            requests/sec.</p>
+                        <div class="proj-tags">
+                            <span>Node.js</span><span>PostgreSQL</span><span>Redis</span><span>Docker</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card featured tilt-card">
+                    <div class="tilt-inner">
+                        <div class="project-header">
+                            <div class="proj-icons">
+                                <span class="proj-folder">📁</span>
+                                <div class="proj-links">
+                                    <a href="https://github.com/Rxpriyansh" target="_blank" class="proj-link">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                            <path
+                                                d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+                                        </svg>
+                                    </a>
+                                    <a href="#" target="_blank" class="proj-link">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                                            <polyline points="15 3 21 3 21 9" />
+                                            <line x1="10" y1="14" x2="21" y2="3" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="proj-name">analytics-dashboard</h3>
+                        <p class="proj-desc">Real-time analytics platform with interactive data visualizations and
+                            custom reports.</p>
+                        <div class="proj-tags">
+                            <span>React</span><span>D3.js</span><span>WebSocket</span><span>Node.js</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card tilt-card">
+                    <div class="tilt-inner">
+                        <div class="project-header">
+                            <div class="proj-icons">
+                                <span class="proj-folder">📁</span>
+                                <div class="proj-links">
+                                    <a href="https://github.com/Rxpriyansh" target="_blank" class="proj-link">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                            <path
+                                                d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+                                        </svg>
+                                    </a>
+                                    <a href="#" target="_blank" class="proj-link">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                                            <polyline points="15 3 21 3 21 9" />
+                                            <line x1="10" y1="14" x2="21" y2="3" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="proj-name">ai-chat-platform</h3>
+                        <p class="proj-desc">Conversational AI interface with natural language processing and context
+                            awareness.</p>
+                        <div class="proj-tags">
+                            <span>Python</span><span>OpenAI</span><span>React</span><span>FastAPI</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="projects-cta">
+                <a href="https://github.com/Rxpriyansh" target="_blank" class="btn-secondary">
+                    <span class="btn-icon">⟩</span> View all repositories
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ CONTACT ═════════════════════════════════════════════ -->
+    <section class="section" id="contact">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">$ ./contact.exe</span>
+                <h2 class="section-title">Get In Touch</h2>
+                <div class="section-line"></div>
+            </div>
+            <div class="contact-layout">
+                <div class="contact-info">
+                    <div class="contact-terminal">
+                        <div class="terminal-header">
+                            <span class="t-dot red"></span>
+                            <span class="t-dot yellow"></span>
+                            <span class="t-dot green"></span>
+                            <span class="t-title">contact.sh</span>
+                        </div>
+                        <div class="terminal-body">
+                            <p class="t-output">Let's connect and build something amazing together.</p>
+                            <br />
+                            <a href="mailto:priyanshgandharv529@gmail.com" class="contact-item">
+                                <span class="contact-icon">✉</span>
+                                <span class="contact-label">"priyanshgandharv529@gmail.com"</span>
+                            </a>
+                            <a href="https://github.com/Rxpriyansh" target="_blank" class="contact-item">
+                                <span class="contact-icon">⌥</span>
+                                <span class="contact-label">"@Rxpriyansh"</span>
+                            </a>
+                            <a href="https://www.linkedin.com/in/priyansh-gandharv" target="_blank"
+                                class="contact-item">
+                                <span class="contact-icon">in</span>
+                                <span class="contact-label">"linkedin.com/in/priyansh-gandharv"</span>
+                            </a>
+                            <a href="https://www.instagram.com/rx_priyansh" target="_blank" class="contact-item">
+                                <span class="contact-icon">📷</span>
+                                <span class="contact-label">"@rx_priyansh"</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <label for="cname" class="form-label"><span class="t-prompt">$</span> name</label>
+                        <input type="text" id="cname" name="name" class="form-input" placeholder="Your name..."
+                            required />
+                    </div>
+                    <div class="form-group">
+                        <label for="cemail" class="form-label"><span class="t-prompt">$</span> email</label>
+                        <input type="email" id="cemail" name="email" class="form-input" placeholder="your@email.com..."
+                            required />
+                    </div>
+                    <div class="form-group">
+                        <label for="cmessage" class="form-label"><span class="t-prompt">$</span> message</label>
+                        <textarea id="cmessage" name="message" class="form-input form-textarea"
+                            placeholder="Your message..." rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <span class="btn-icon">⟩</span> Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ FOOTER ══════════════════════════════════════════════ -->
+    <footer class="footer">
+        <div class="container footer-inner">
+            <p class="footer-built">Built with ❤ using <span class="highlight-text">Next.js</span>, <span
+                    class="highlight-text">TypeScript</span> &amp; <span class="highlight-text">Tailwind</span></p>
+            <p class="footer-copy">© 2026 Priyansh Gandharv. All rights reserved.</p>
+            <p class="footer-hint">Press <kbd>Ctrl+K</kbd> for command palette · <kbd>&gt;_</kbd> for terminal</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
